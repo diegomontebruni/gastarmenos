@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:12-alpine
+    restart: unless-stopped
+    container_name: gastar_menos_postgres
+    environment:
+      - POSTGRES_USER=app_gastar_menos
+      - POSTGRES_PASSWORD=app_gastar_menos
+      - POSTGRES_DB=gastarmenos
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "sh -c 'pg-isready -U app_gastar_menos -d gastarmenos'"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - gastar-menos-network
+
+volumes:
+  gastar_menos_postgres: { }
+
+networks:
+  gastar-menos-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.10.2.0/24

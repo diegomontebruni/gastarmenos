@@ -1,2 +1,2 @@
-# gastarmenos
+# Gastar Menos
 Gerenciador de finanças pessoais
