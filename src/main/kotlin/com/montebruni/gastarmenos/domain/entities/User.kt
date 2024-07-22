@@ -17,6 +17,7 @@ import java.util.UUID
 @EntityListeners(AuditingEntityListener::class)
 @Table(name = "users")
 data class User(
+
     @Id
     @Column(updatable = false)
     val id: UUID = UUID.randomUUID(),
