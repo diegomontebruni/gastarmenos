@@ -21,7 +21,7 @@ class TransactionRepositoryIT(
     @Autowired private val transactionRepository: TransactionRepository,
     @Autowired private val accountRepository: AccountRepository,
     @Autowired private val userRepository: UserRepository,
-) : DatabaseIT(transactionRepository) {
+) : DatabaseIT(listOf(transactionRepository, accountRepository, userRepository)) {
 
     @BeforeEach
     fun setup() {
