@@ -19,10 +19,10 @@ class AccountRepositoryIT(
 
     @Test
     fun `should save account successfully`() {
-        val user = createUser().also { userRepository.save(it) }
+        val user = createUser().also(userRepository::saveAndFlush)
         val account = createAccount()
             .copy(userId = user.id)
-            .also { accountRepository.save(it) }
+            .also(accountRepository::saveAndFlush)
 
         val savedAccount = accountRepository.findByIdOrNull(account.id)
 
