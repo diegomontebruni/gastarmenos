@@ -1,10 +1,10 @@
-package com.montebruni.gastarmenos.domain.repositories
+package com.montebruni.gastarmenos.infrastructure.database.postgres
 
 import com.montebruni.gastarmenos.configuration.DatabaseIT
-import com.montebruni.gastarmenos.fixtures.createAccount
-import com.montebruni.gastarmenos.fixtures.createInstallment
-import com.montebruni.gastarmenos.fixtures.createTransaction
-import com.montebruni.gastarmenos.fixtures.createUser
+import com.montebruni.gastarmenos.fixtures.createAccountPostgresModel
+import com.montebruni.gastarmenos.fixtures.createInstallmentPostgresModel
+import com.montebruni.gastarmenos.fixtures.createTransactionPostgresModel
+import com.montebruni.gastarmenos.fixtures.createUserPostgresModel
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
@@ -13,11 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.repository.findByIdOrNull
 import java.util.UUID
 
-class InstallmentRepositoryIT(
-    @Autowired private val installmentRepository: InstallmentRepository,
-    @Autowired private val transactionRepository: TransactionRepository,
-    @Autowired private val accountRepository: AccountRepository,
-    @Autowired private val userRepository: UserRepository,
+class InstallmentPostgresRepositoryIT(
+    @Autowired private val installmentRepository: InstallmentPostgresRepository,
+    @Autowired private val transactionRepository: TransactionPostgresRepository,
+    @Autowired private val accountRepository: AccountPostgresRepository,
+    @Autowired private val userRepository: UserPostgresRepository,
 ) : DatabaseIT(listOf(installmentRepository, transactionRepository, accountRepository, userRepository)) {
 
     private val userId = UUID.randomUUID()
@@ -26,17 +26,17 @@ class InstallmentRepositoryIT(
 
     @BeforeEach
     fun setup() {
-        createUser()
+        createUserPostgresModel()
             .copy(id = userId).let(userRepository::saveAndFlush)
-        createAccount()
+        createAccountPostgresModel()
             .copy(id = accountId, userId = userId).let(accountRepository::saveAndFlush)
-        createTransaction()
+        createTransactionPostgresModel()
             .copy(id = transactionId, creditAccountId = accountId).let(transactionRepository::saveAndFlush)
     }
 
     @Test
     fun `should save an installment`() {
-        val installment = createInstallment()
+        val installment = createInstallmentPostgresModel()
             .copy(transactionId = transactionId).let(installmentRepository::saveAndFlush)
 
         val savedInstallment = installmentRepository.findByIdOrNull(installment.id)
@@ -47,13 +47,14 @@ class InstallmentRepositoryIT(
 
     @Test
     fun `should save a list of installment for a transaction and find all by transactionId`() {
-        for (i in 1..6) {
-            createInstallment()
+        val totalInstallments = 6
+        for (i in 1..totalInstallments) {
+            createInstallmentPostgresModel()
                 .copy(transactionId = transactionId, number = i).let(installmentRepository::saveAndFlush)
         }
 
         val savedInstallments = installmentRepository.findByTransactionId(transactionId)
 
-        assertEquals(6, savedInstallments.size)
+        assertEquals(totalInstallments, savedInstallments.size)
     }
 }
