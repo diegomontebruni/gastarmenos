@@ -19,7 +19,7 @@ open class DatabaseIT(
     constructor(repository: JpaRepository<*, *>) : this(listOf(repository))
 
     @BeforeEach
-    fun cleanDb() = repositories.forEach { it.deleteAllInBatch() }
+    fun cleanDb() = repositories.forEach { it.deleteAll() }
 
     companion object {
 
