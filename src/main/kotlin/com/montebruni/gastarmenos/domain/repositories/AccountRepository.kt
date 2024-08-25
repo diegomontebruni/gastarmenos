@@ -1,3 +1,8 @@
 package com.montebruni.gastarmenos.domain.repositories
 
-interface AccountRepository
+import com.montebruni.gastarmenos.domain.entities.Account
+
+interface AccountRepository {
+
+    fun save(account: Account): Account
+}
