@@ -1,3 +1,3 @@
 package com.montebruni.gastarmenos.infrastructure.database
 
-class InstallmentRepositoryAdapter
+class TransactionPostgresRepositoryAdapter

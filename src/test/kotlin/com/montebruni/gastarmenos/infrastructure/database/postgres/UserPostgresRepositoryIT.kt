@@ -23,4 +23,15 @@ class UserPostgresRepositoryIT(
         assertEquals(user.username, savedUser?.username)
         assertEquals(UserStatus.ACTIVE.name, savedUser?.status)
     }
+
+    @Test
+    fun `should find user by username`() {
+        val user = createUserPostgresModel().also { userRepository.save(it) }
+
+        val savedUser = userRepository.findByUsername(user.username)
+
+        assertNotNull(savedUser)
+        assertEquals(user.username, savedUser?.username)
+        assertEquals(UserStatus.ACTIVE.name, savedUser?.status)
+    }
 }
