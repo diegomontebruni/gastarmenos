@@ -31,6 +31,13 @@ class InstallmentPostgresRepositoryAdapterTest(
         val result = adapter.save(installment)
 
         assertThat(result).isEqualTo(installment)
+        assertEquals(installment.id, repositorySlot.captured.id)
+        assertEquals(installment.transactionId, repositorySlot.captured.transactionId)
+        assertEquals(installment.amount, repositorySlot.captured.amount)
+        assertEquals(installment.dueDate, repositorySlot.captured.dueDate)
+        assertEquals(installment.number, repositorySlot.captured.number)
+        assertEquals(installment.status.name, repositorySlot.captured.status)
+        assertEquals(installment.description, repositorySlot.captured.description)
 
         verify(exactly = 1) { repository.save(repositorySlot.captured) }
     }

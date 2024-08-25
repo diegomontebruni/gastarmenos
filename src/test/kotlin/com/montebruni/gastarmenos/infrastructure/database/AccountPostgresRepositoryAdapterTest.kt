@@ -29,6 +29,11 @@ class AccountPostgresRepositoryAdapterTest(
         val result = adapter.save(account)
 
         assertEquals(account, result)
+        assertEquals(account.id, repositorySlot.captured.id)
+        assertEquals(account.userId, repositorySlot.captured.userId)
+        assertEquals(account.status.name, repositorySlot.captured.status)
+        assertEquals(account.balance, repositorySlot.captured.balance)
+        assertEquals(account.name, repositorySlot.captured.name)
 
         verify(exactly = 1) { repository.save(repositorySlot.captured) }
     }
